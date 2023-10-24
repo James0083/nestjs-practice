@@ -7,7 +7,8 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    // return this.appService.getHello();
+    return process.env.DATABASE_HOST;
   }
 
   // constructor(private readonly serviceB: ServiceB) { }
