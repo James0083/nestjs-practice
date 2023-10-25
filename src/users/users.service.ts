@@ -7,6 +7,7 @@ import { UserInfo } from './UserInfo';
 export class UsersService {
   constructor(private emailService: EmailService) {}
 
+  //4.3.2 회원가입
   async createUser(name: string, email: string, password: string) {
     await this.checkUserExists(email);
 
@@ -24,10 +25,12 @@ export class UsersService {
     return; // TODO: DB연동 후 구현
   }
 
+  //4.3.3 회원가입 이메일 발송
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(email, signupVerifyToken);
   }
 
+  //4.3.4 이메일 인증
   async verifyEmail(signupVerifyToken: string): Promise<string>{
     //TODO
     //1. DB에서 signupVerifyToken으로 회원가입 처리중인 유저가 있는지 조회하고 없다면 에러처리

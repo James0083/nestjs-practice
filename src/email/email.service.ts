@@ -8,6 +8,7 @@ interface EmailOptions {
   html: string;
 }
 
+//4.3.3 회원가입 이메일 발송
 @Injectable()
 export class EmailService {
   private transporter: Mail;

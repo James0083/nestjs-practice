@@ -11,6 +11,7 @@ export class AppController {
     return process.env.DATABASE_HOST;
   }
 
+  // 4.2 프로바이더 등록과 사용 실습예제
   // constructor(private readonly serviceB: ServiceB) { }
 
   // @Get('/serviceB')
