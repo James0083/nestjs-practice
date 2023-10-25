@@ -11,7 +11,7 @@ import { UserInfo } from './UserInfo';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // //3.1.9 payload다루기 - User 생성
+  // //3.1.9 payload다루기 - User 생성 
   // @Post()
   // create(@Body() createUserDto: CreateUserDto) {
   //   const { name, email } = createUserDto;
@@ -31,7 +31,7 @@ export class UsersController {
   //보안정책으로 인증메일 port(208.91.112.55:465)가 block되어서 테스트 할 수 없음.
   @Post('/email-verify')
   async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string>{
-    // console.log(dto);
+    console.log(dto);
     const { signupVerifyToken } = dto;
     return await this.usersService.verifyEmail(signupVerifyToken);
   }
