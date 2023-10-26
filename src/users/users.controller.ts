@@ -49,7 +49,7 @@ export class UsersController {
     console.log(userId);
     return await this.usersService.getUserInfo(userId);
   }
-  //~
+  //~3.2
   
   // @Get()
   // findAll() {
