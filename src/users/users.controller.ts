@@ -26,7 +26,7 @@ export class UsersController {
     const { name, email, password } = dto;
     await this.usersService.createUser(name, email, password);
   }  
-  //$ curl http://localhost:3000/users -H "Content-Type: application/json" -X POST -d "{\"name\":\"YOUR_NAME\",\"email\":\"YOUR_EMAIL@gmail.com\",\"password\":\"YOUR_PASSWORD\"}"
+  //$ curl http://localhost:3030/users -H "Content-Type: application/json" -X POST -d "{\"name\":\"YOUR_NAME\",\"email\":\"YOUR_EMAIL@gmail.com\",\"password\":\"YOUR_PASSWORD\"}"
 
   //보안정책으로 인증메일 port(208.91.112.55:465)가 block되어서 테스트 할 수 없음.
   @Post('/email-verify')
