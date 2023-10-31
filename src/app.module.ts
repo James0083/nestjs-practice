@@ -13,6 +13,13 @@ import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './config/authConfig';
+import * as winston from 'winston';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
+import { ExceptionModule } from './exception/exception.module';
+import { LoggingModule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -35,9 +42,22 @@ import authConfig from './config/authConfig';
       // migrations: [__dirname + '/**/migrations/*.js'],
       // migrationsTableName: 'migrations',
     }),
+    // WinstonModule.forRoot({
+    //   transports: [
+    //     new winston.transports.Console({
+    //       level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
+    //       format: winston.format.combine(
+    //         winston.format.timestamp(),
+    //         nestWinstonModuleUtilities.format.nestLike('MyApp', { prettyPrint: true }),
+    //       ),
+    //     }),
+    //   ],
+    // }),
     UsersModule,
     EmailModule,
     AuthModule,
+    ExceptionModule,
+    LoggingModule,
   ],
   controllers: [ApiController2, ApiController, AppController],
   providers: [AppService, BaseService, ServiceA, ServiceB, ConfigService],
