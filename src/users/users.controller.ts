@@ -1,15 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query, Headers, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './UserInfo';
+import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from 'src/auth.guard';
 
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private usersService: UsersService, private authService: AuthService) {}
 
   // //3.1.9 payload다루기 - User 생성 
   // @Post()
@@ -44,45 +46,19 @@ export class UsersController {
     return await this.usersService.login(email, password);
   }
 
-  @Get('/:id')
-  async getUserInfo(@Param('id') userId: string): Promise<UserInfo>{
-    console.log(userId);
+  // @Get('/:id')
+  // async getUserInfo(@Headers() headers: any, @Param('id') userId: string): Promise<UserInfo>{
+  //   // console.log(userId);
+  //   const jwtString = headers.authorization.split('Bearer')[1];
+
+  //   this.authService.verify(jwtString);
+
+  //   
+  // }
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  async getUserInfo(@Headers() headers: any, @Param('id') userId: string): Promise<UserInfo> {
     return await this.usersService.getUserInfo(userId);
   }
-  //~3.2
-  
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
-
-  // //3.1.5 header
-  // @Header('Custom', 'Test Header')
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   //3.1.4 response
-  //   if (+id < 1) {
-  //     // throw new NotFoundException('id는 0보다 큰 값이어야 합니다.');
-  //     throw new BadRequestException('id는 0보다 큰 값이어야 합니다.');
-  //   }
-
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // //3.1.6
-  // @Redirect('https://nestjs.com', 301)
-  // @Get('redirect/docs')
-  // findOneRedirection(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
 }
