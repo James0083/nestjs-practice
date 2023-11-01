@@ -9,6 +9,9 @@ import { AuthService } from 'src/auth/auth.service';
 import { AuthGuard } from 'src/auth.guard';
 import { Logger as WinstonLogger } from 'winston';
 import { WINSTON_MODULE_NEST_PROVIDER, WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateUserCommand } from './command/create-user.command';
+import { GetUserInfoQuery } from './query/get-user-info.query';
 
 
 @Controller('users')
@@ -18,7 +21,9 @@ export class UsersController {
     // @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
     @Inject(Logger) private readonly logger: LoggerService,
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private commandBus: CommandBus,
+    private queryBus: QueryBus,
   ) { }
 
   @Post()
@@ -26,8 +31,12 @@ export class UsersController {
     // this.printWinstonLog(dto);
     // this.printLoggerServiceLog(dto);
     const { name, email, password } = dto;
-    // return;
-    await this.usersService.createUser(name, email, password);
+    
+    // await this.usersService.createUser(name, email, password);
+    
+    const command = new CreateUserCommand(name, email, password);
+
+    return this.commandBus.execute(command);
   }
   
   //$ curl http://localhost:3030/users -H "Content-Type: application/json" -X POST -d "{\"name\":\"YOUR_NAME\",\"email\":\"YOUR_EMAIL@gmail.com\",\"password\":\"YOUR_PASSWORD\"}"
@@ -61,7 +70,10 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async getUserInfo(@Headers() headers: any, @Param('id') userId: string): Promise<UserInfo> {
-    return await this.usersService.getUserInfo(userId);
+    // return await this.usersService.getUserInfo(userId);
+    const getUserInfoQuery = new GetUserInfoQuery(userId);
+
+    return this.queryBus.execute(getUserInfoQuery);
   }
 
   // private printWinstonLog(dto) {

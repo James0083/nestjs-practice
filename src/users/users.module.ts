@@ -4,11 +4,32 @@ import { AuthModule } from 'src/auth/auth.module';
 import { EmailModule } from 'src/email/email.module';
 import { UserEntity } from './entities/user.entity';
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CreateUserHandler } from './command/create-user.handler';
+import { LoginHandler } from './command/login.handler';
+import { VerifyAccessTokenHandler } from './command/verify-access-token.handler';
+import { VerifyEmailHandler } from './command/verify-email.handler';
+import { UserEventsHandler } from './event/user-event.handler';
+
+const commandHandlers = [
+  CreateUserHandler,
+  VerifyEmailHandler,
+  LoginHandler,
+  VerifyAccessTokenHandler,
+];
 
 @Module({
-  imports: [EmailModule, TypeOrmModule.forFeature([UserEntity]), AuthModule],
+  imports: [
+    EmailModule,
+    TypeOrmModule.forFeature([UserEntity]),
+    AuthModule,
+    CqrsModule,
+  ],
   controllers: [UsersController],
-  providers: [UsersService, Logger],
+  providers: [
+    ...commandHandlers,
+    UserEventsHandler,
+    Logger,
+  ],
 })
-export class UsersModule {}
+export class UsersModule { }
