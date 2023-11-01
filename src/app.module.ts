@@ -20,6 +20,10 @@ import {
 } from 'nest-winston';
 import { ExceptionModule } from './exception/exception.module';
 import { LoggingModule } from './logging/logging.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthCheckController } from './health-check/health-check.controller';
+import { HttpModule } from '@nestjs/axios';
+import { DogHealthIndicator } from './health-check/dog.health';
 
 @Module({
   imports: [
@@ -58,8 +62,10 @@ import { LoggingModule } from './logging/logging.module';
     AuthModule,
     ExceptionModule,
     LoggingModule,
+    TerminusModule,
+    HttpModule,
   ],
-  controllers: [ApiController2, ApiController, AppController],
-  providers: [AppService, BaseService, ServiceA, ServiceB, ConfigService],
+  controllers: [ApiController2, ApiController, AppController, HealthCheckController],
+  providers: [AppService, BaseService, ServiceA, ServiceB, ConfigService, DogHealthIndicator],
 })
 export class AppModule {}
