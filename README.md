@@ -76,3 +76,5 @@ Nest is [MIT licensed](LICENSE).
 ## My Summary Note
 
 [Notion](https://www.notion.so/youjaewon/NestJS-eec020bb6f684e4da16d67270939e1c7?pvs=4)
+
+[Github Directory](./nestjs-book-summary)
