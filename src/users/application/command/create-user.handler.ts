@@ -3,7 +3,7 @@ import { ulid } from 'ulid';
 import { Inject, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user.command';
-import { UserFactory } from 'src/users/domain/user.factory';
+import { UserFactory } from '../../domain/user.factory';
 import { IUserRepository } from 'src/users/domain/repository/iuser.repository';
 
 @Injectable()
